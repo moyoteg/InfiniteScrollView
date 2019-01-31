@@ -8,42 +8,51 @@
 
 import UIKit
 
-class ViewController2: UIViewController, InfiniteScrollViewDataSource, InfiniteScrollViewProtocol, UIScrollViewDelegate {
+class ViewController: UIViewController, InfiniteScrollViewDataSource, InfiniteScrollViewProtocol, UIScrollViewDelegate {
 
-	@IBOutlet var infiniteScrollView: InfiniteScrollView!
+	var infiniteScrollView: InfiniteScrollView!
 	@IBOutlet var currentIndexLabel: UILabel!
 	@IBOutlet var currentContentOffsetLabel: UILabel!
-	
-	let images:[UIImage] = [#imageLiteral(resourceName: "0"),#imageLiteral(resourceName: "1"),#imageLiteral(resourceName: "2"), #imageLiteral(resourceName: "Moi")]
-	
+
+	/// images to be displayed
+	let images: [UIImage] = [#imageLiteral(resourceName: "0"), #imageLiteral(resourceName: "1"), #imageLiteral(resourceName: "2")]
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+		infiniteScrollView = InfiniteScrollView(frame: self.view.frame)
+		self.view.insertSubview(infiniteScrollView, at: 0)
 
         // Do any additional setup after loading the view.
 		infiniteScrollView.delegate = self
 		infiniteScrollView.infiniteScrollDataSource = self
 		infiniteScrollView.infiniteScrollDelegate = self
     }
-	
-	//Mark : InfiniteScrollViewProtocol
-	
+
+	// MARK: UIScrollViewDelegate
+
+	func scrollViewDidScroll(_ infiniteScrollView: UIScrollView) {
+		currentContentOffsetLabel.text = "x offset: \(String(format: "%.2f", infiniteScrollView.contentOffset.x))"
+	}
+
+	// MARK: InfiniteScrollViewProtocol
+
 	func didScroll(to index: Int) {
 		currentIndexLabel.text = "\(index)"
+		currentIndexLabel.pulseFast()
 	}
-	
-	//Mark: UIScrollViewDelegate
-	
-	func infiniteScrollViewDidScroll(_ infiniteScrollView: UIScrollView) {
-		currentContentOffsetLabel.text = "x: \(String(format: "%.2f", infiniteScrollView.contentOffset.x))"
-	}
-	
-	//Mark: UIScrollViewDataSource
-	
+
+	// MARK: InfiniteScrollViewDataSource
+
 	func numberOfImages() -> Int {
 		return images.count
 	}
 
 	func image(for index: Int) -> UIImage {
 		return images[index]
+	}
+
+	func imageContentMode(for index: Int) -> UIView.ContentMode {
+		return .scaleAspectFit
 	}
 }

@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+extension Int {
+	func mod(_ integer: Int) -> Int {
+		precondition(integer > 0, "modulus must be positive")
+		let remainder = self % integer
+		return remainder >= 0 ? remainder : remainder + integer
+	}
+}

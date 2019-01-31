@@ -1,9 +1,6 @@
 # InfiniteScrollView
-interview
 
-# Project Title
-
-Sample project to show how to make an infinitely scrolling scrollView
+project meant as an evaluation for an interview with []
 
 ## Getting Started
 
